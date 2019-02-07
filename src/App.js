@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import List from './List';
+import STORE from './store';
 
 class App extends Component {
 
@@ -13,7 +14,13 @@ class App extends Component {
     }
   };
 
+  state = {
+    state: STORE,
+  };
+
   // handle delete button click function
+  // button event handlers should be methods, and use setState({})
+  // each list and each card should be selected by using their id
   // from instructions - how to remove key value pairs from an object
 
   // function omit(obj, keyToOmit) {
@@ -25,7 +32,22 @@ class App extends Component {
   // }
   
 
-  // handle random card button click function - from assignment instructions
+  onDeleteClick = (cardId) => {
+    console.log('deleting....')
+    console.log(cardId);
+
+    // const { lists, allCards } = this.props;
+
+
+
+  
+
+  }
+  
+
+  // handle random card button click function
+  // must add new card to both allCards object as well as insert the id into lists.cardIds
+  // from assignment instructions
   // const newRandomCard = () => {
   //   const id = Math.random().toString(36).substring(2, 4)
   //     + Math.random().toString(36).substring(2, 4);
@@ -47,8 +69,10 @@ class App extends Component {
          {store.lists.map(list =>(
            <List
               key = {list.id}
+              id = {list.id}
               header = {list.header}
               card = {list.cardIds.map(id => store.allCards[id])}
+              onDeleteClick = {this.onDeleteClick}
            />
         ) )} 
       </div>

@@ -15,7 +15,13 @@ function List(props){
 
       <div>
         {props.card.map(card =>
-          <Card key={Object.keys(STORE.allCards)} title={card.title} content={card.content} />
+          <Card 
+            key={Object.keys(STORE.allCards)}
+            id={card.id} 
+            title={card.title} 
+            content={card.content} 
+            onDeleteClick={props.onDeleteClick}
+            />
           )}
       </div>
     </div>
