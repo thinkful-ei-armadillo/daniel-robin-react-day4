@@ -3,6 +3,14 @@ import './App.css';
 import List from './List';
 import STORE from './store';
 
+function omit(obj, keyToOmit) {
+    return Object.entries(obj).reduce(
+      (newObj, [key, value]) =>
+          key === keyToOmit ? newObj : {...newObj, [key]: value},
+      {}
+    );
+  }
+
 class App extends Component {
 
   // add store to a new state storage here so that all details can be passed down to children
@@ -15,32 +23,39 @@ class App extends Component {
   };
 
   state = {
-    state: STORE,
+    STORE
   };
 
   // handle delete button click function
   // button event handlers should be methods, and use setState({})
   // each list and each card should be selected by using their id
   // from instructions - how to remove key value pairs from an object
-
-  // function omit(obj, keyToOmit) {
-  //   return Object.entries(obj).reduce(
-  //     (newObj, [key, value]) =>
-  //         key === keyToOmit ? newObj : {...newObj, [key]: value},
-  //     {}
-  //   );
-  // }
   
 
-  onDeleteClick = (cardId) => {
+  handleDeleteClick = (idOfCard) => {
     console.log('deleting....')
-    console.log(cardId);
 
-    // const { lists, allCards } = this.props;
+    // console.log(this.state.lists[0].cardIds);
+    
+    const { lists, allCards } = this.state.STORE;
 
+    // take cardId and use it to filter out cards in lists that DONT have that id
 
+    const reRenderList = lists.map( list => {
+      list.cardIds = list.cardIds.filter( id => id !== idOfCard );
+     return list;
+    })
+    
+    console.log(idOfCard);
+    console.log(allCards);
 
-  
+    // allCards[idOfCard].remove();
+
+    omit(allCards[idOfCard], idOfCard)
+
+    this.setState({
+      lists: reRenderList
+    })
 
   }
   
@@ -59,24 +74,25 @@ class App extends Component {
   // }
 
   render() {
-    const {store} = this.props;
+    // const {store} = this.state;
+    // const {store} = this.props;
       return(
-    <main>
-      <header>
-        <h1>Trello</h1>
-      </header>
-      <div className='App-list'>
-         {store.lists.map(list =>(
-           <List
-              key = {list.id}
-              id = {list.id}
-              header = {list.header}
-              card = {list.cardIds.map(id => store.allCards[id])}
-              onDeleteClick = {this.onDeleteClick}
-           />
-        ) )} 
-      </div>
-    </main>
+        <main>
+          <header>
+            <h1>Trello</h1>
+          </header>
+          <div className='App-list'>
+            {this.state.STORE.lists.map(list =>(
+              <List
+                  key = {list.id}
+                  id = {list.id}
+                  header = {list.header}
+                  card = {list.cardIds.map(id => ({...this.state.STORE.allCards[id], id}))}
+                  onDeleteClick = {this.handleDeleteClick}
+              />
+            ) )} 
+          </div>
+        </main>
   );
   }
 }

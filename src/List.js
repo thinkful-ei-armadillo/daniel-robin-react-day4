@@ -4,8 +4,9 @@ import './List.css';
 import STORE from './store';
 
 function List(props){
-  
-  console.log(Object.keys(STORE.allCards));
+  console.log(props)
+  // console.log(props.card.id)
+  // console.log(Object.keys(STORE.allCards));
   
   return(
     <div className="List">
@@ -16,7 +17,7 @@ function List(props){
       <div>
         {props.card.map(card =>
           <Card 
-            key={Object.keys(STORE.allCards)}
+            key={card.id}
             id={card.id} 
             title={card.title} 
             content={card.content} 
