@@ -24,6 +24,7 @@ function List(props){
             onDeleteClick={props.onDeleteClick}
             />
           )}
+          <button onClick={() => props.onRandomClick(props.id)}>Random Generator</button>
       </div>
     </div>
   );

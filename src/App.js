@@ -11,6 +11,16 @@ function omit(obj, keyToOmit) {
     );
   }
 
+  function newRandomCard () {
+    const id = Math.random().toString(36).substring(2, 4)
+      + Math.random().toString(36).substring(2, 4);
+    return {
+      id,
+      title: `Random Card ${id}`,
+      content: 'lorem ipsum',
+    }
+  }
+
 class App extends Component {
 
   // add store to a new state storage here so that all details can be passed down to children
@@ -26,7 +36,7 @@ class App extends Component {
     STORE
   };
 
-  // handle delete button click function
+  // handle delete button click function  
   // button event handlers should be methods, and use setState({})
   // each list and each card should be selected by using their id
   // from instructions - how to remove key value pairs from an object
@@ -45,33 +55,36 @@ class App extends Component {
       list.cardIds = list.cardIds.filter( id => id !== idOfCard );
      return list;
     })
-    
-    console.log(idOfCard);
-    console.log(allCards);
-
     // allCards[idOfCard].remove();
-
-    omit(allCards[idOfCard], idOfCard)
-
+    // const newObj = omit(allCards[idOfCard], idOfCard);
+    // console.log(newObj);
     this.setState({
       lists: reRenderList
     })
 
   }
-  
+  handleRandomClick =(idOfList) =>{
+     const newCard = newRandomCard();
+    
+     const reRenderList = this.state.STORE.lists.map(list => {
+       if(list.id === idOfList){
+         list.cardIds.push(newCard.id);
+       }return list;
+     })
 
+     this.setState({
+       STORE: {
+         lists: reRenderList,
+         allCards: {...this.state.STORE.allCards, [newCard.id]: newCard
+         }
+       }
+     })
+
+  }  
   // handle random card button click function
   // must add new card to both allCards object as well as insert the id into lists.cardIds
   // from assignment instructions
-  // const newRandomCard = () => {
-  //   const id = Math.random().toString(36).substring(2, 4)
-  //     + Math.random().toString(36).substring(2, 4);
-  //   return {
-  //     id,
-  //     title: `Random Card ${id}`,
-  //     content: 'lorem ipsum',
-  //   }
-  // }
+
 
   render() {
     // const {store} = this.state;
@@ -89,6 +102,7 @@ class App extends Component {
                   header = {list.header}
                   card = {list.cardIds.map(id => ({...this.state.STORE.allCards[id], id}))}
                   onDeleteClick = {this.handleDeleteClick}
+                  onRandomClick = {this.handleRandomClick}
               />
             ) )} 
           </div>
