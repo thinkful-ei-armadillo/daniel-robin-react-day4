@@ -24,7 +24,6 @@ function omit(obj, keyToOmit) {
 class App extends Component {
 
   // add store to a new state storage here so that all details can be passed down to children
-
   static defaultProps = {
     store: {
       lists: [],
@@ -87,6 +86,7 @@ class App extends Component {
 
 
   render() {
+    console.log(this.state);
     // const {store} = this.state;
     // const {store} = this.props;
       return(
@@ -103,8 +103,7 @@ class App extends Component {
                   card = {list.cardIds.map(id => ({...this.state.STORE.allCards[id], id}))}
                   onDeleteClick = {this.handleDeleteClick}
                   onRandomClick = {this.handleRandomClick}
-              />
-            ) )} 
+              />))} 
           </div>
         </main>
   );
